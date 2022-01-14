@@ -170,22 +170,15 @@ class RotaryDial {
 	rotate(e) {
 	
 			if( !this.clicking || this.a >= this.TWOPI) return;
-			
 			if( this.a < 1 ) {
-			
 				this.a = 1;
 				return;
-				
 			}
-			
 			const pos = this.getPos(e);
 			const dist = this.getDist( pos.x, pos.y, this.w2, this.h2 )
-		
-			if( dist > this.size/2 || dist < this.size/2-this.offset ){
-				
+			if( dist > this.size/2 || dist < this.size/2-this.offset ) {
 				this.clear()
 				return
-				
 			}
 			
 			const n = Math.floor((this.a-1.1) / (this.TWOPI-0.8) * 11);
@@ -197,18 +190,13 @@ class RotaryDial {
 			this.draw();
 	}
 	
-	goBack(){
+	goBack() {
 	
-		if( this.a > 1 ){
-		
+		if( this.a > 1 ) {
 			this.a -= 0.1
-			
 			this.draw();
-			
 			requestAnimationFrame( _=>{ this.goBack() } );
-			
 			if( this.a - 1 < 0.05 )
-			
 				this.a = 1;
 		}
 	}
