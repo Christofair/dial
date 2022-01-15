@@ -161,11 +161,7 @@ class RotaryDial {
 				this.a = 1;
 				return;
 			}
-            if(this.lastAngle > -0.001 && this.lastAngle < 0.001) {
-                // This solution is not perfect,
-                // but work corectly when mouse move is slow.
-                return 
-            }
+            if(this.lastAngle > 0 && this.startAngle < 0) return;
 			const pos = this.getPos(e);
 			const dist = this.getDist( pos.x, pos.y, this.w2, this.h2 )
 			if( dist > this.size/2 || dist < this.size/2-this.offset ) {
@@ -179,6 +175,7 @@ class RotaryDial {
 			const delta = (this.a - (this.lastAngle - this.newAngle));
 			this.a = delta > 0 ? delta : this.TWOPI+delta;
 			this.lastAngle = this.newAngle;
+            if(this.startAngle > 0 && this.lastAngle < 0) this.startAngle = this.lastAngle;
 			this.draw();
 	}
 	
