@@ -82,7 +82,6 @@ class RotaryDial {
 			this.c.strokeStyle = this.textStrokeColor;
 			this.c.fillText(n, x, y+this.size * 0.02);
 			this.c.strokeText(n, x, y+this.size * 0.02);
-			
 		}
 		
 		this.c.restore();
@@ -122,6 +121,7 @@ class RotaryDial {
 		if( dist > this.size/2 || dist < this.size/2-this.offset )
 			return
 		this.lastAngle = Math.atan2( pos.y - this.h2, pos.x - this.w2 );
+        this.startAngle = this.lastAngle;
 		this.number = null;
 		this.clicking = true;
 	}
@@ -133,38 +133,25 @@ class RotaryDial {
 	}
 	
 	getPos(e){
-	
 		e.preventDefault();
-	
 		let x, y;
-		
 		const rect = this.canvas.getBoundingClientRect();
-	
 		const _x = this.canvas.width/rect.width;
 		const _y = this.canvas.height/rect.height;
-	
-		if( e.touches ){
-			
+		if( e.touches ) {
 			x = (e.targetTouches[0].pageX - rect.left) * _x;
 			y = (e.targetTouches[0].pageY - rect.top) *_y;
-			
-		}else{
-		
+		}else {
 			x = e.offsetX * _x;
 			y = e.offsetY * _y;
-			
 		}
-		
 		return {x, y};
-	
 	}
 	
-	clear(){
-	
+	clear() {
 			this.number = null;
 			this.clicking = false;
 			this.goBack();
-			
 	}
 	
 	rotate(e) {
@@ -174,6 +161,11 @@ class RotaryDial {
 				this.a = 1;
 				return;
 			}
+            if(this.lastAngle > -0.001 && this.lastAngle < 0.001) {
+                // This solution is not perfect,
+                // but work corectly when mouse move is slow.
+                return 
+            }
 			const pos = this.getPos(e);
 			const dist = this.getDist( pos.x, pos.y, this.w2, this.h2 )
 			if( dist > this.size/2 || dist < this.size/2-this.offset ) {
